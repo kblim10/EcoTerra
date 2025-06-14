@@ -1,0 +1,27 @@
+Blueprint Aplikasi Pembelajaran Ekosistem
+Aktor Pengguna:
+
+Super Admin: Mendaftarkan institusi sekolah beserta domain email resminya. (Peran ini mungkin tidak memerlukan antarmuka di aplikasi mobile, cukup di backend atau dashboard khusus).
+Guru: Mendaftar dengan email domain sekolah yang sudah terverifikasi, dapat membuat kelas, mendaftarkan murid, membuat kuis & materi.
+Murid: Didaftarkan oleh guru, dapat mengerjakan kuis, mengakses materi, dan melihat papan peringkat.
+Masyarakat Umum: Mendaftar sendiri, hanya bisa mengakses forum dan materi umum.
+Teknologi Utama:
+
+Frontend: React Native + Expo
+Navigasi: React Navigation
+State Management: Zustand
+Backend & Database: Firebase
+Otentikasi: Firebase Authentication (untuk login & registrasi).
+Database: Firestore (dengan koleksi terpisah untuk schools, teachers, students, classes, materials, quizzes).
+Penyimpanan File: Firebase Storage (untuk PDF, gambar) dan/atau embed dari YouTube (untuk video).
+Notifikasi: Firebase Cloud Messaging (untuk Push Notification).
+Struktur & Aturan Kunci:
+
+Struktur Data: Relasional antar koleksi. Sebuah entitas schools akan menyimpan domain yang menjadi kunci verifikasi.
+Alur Kelas: Guru membuat kelas, mendapatkan kode kelas unik, dan mendaftarkan murid ke dalam kelas tersebut.
+Keamanan: Data sensitif siswa (nilai) bersifat privat. Data lain (nama, absen) hanya bisa dilihat oleh komunitas sekolah yang sama (Guru & Murid lain di sekolah tersebut), diatur melalui Firestore Security Rules.
+Fitur Spesial: Papan peringkat (leaderboard) akan mengakumulasi semua nilai kuis yang diberikan oleh seorang guru.
+UI/UX:
+
+Palet Warna: Menggunakan palet yang telah Anda berikan (#E1E0C0, #A7A691, #ECEAC9, #1A788E, #0A363F).
+Interaktivitas: Menggunakan animasi modern untuk berbagai aksi pengguna.
