@@ -112,4 +112,4 @@ EcoTerra adalah aplikasi pembelajaran ekosistem yang menghubungkan guru, murid, 
 - [ ] Implementasi papan peringkat
 - [ ] Optimasi performa dan keamanan
 - [ ] Menggunakan data asli, bukan dummy
-- [ ] gunakan konfigurasi development build agar bisa run dan pantau pengembangannya
+- [ ] Gunakan konfigurasi development build agar bisa run dan pantau pengembangannya
