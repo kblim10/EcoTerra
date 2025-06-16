@@ -1,115 +1,167 @@
-# EcoTerra - Aplikasi Pembelajaran Ekosistem
-
-## Deskripsi
+EcoTerra - Aplikasi Pembelajaran Ekosistem
+Deskripsi
 EcoTerra adalah aplikasi pembelajaran ekosistem yang menghubungkan guru, murid, dan masyarakat umum dalam platform pembelajaran yang interaktif dan ramah lingkungan.
 
-## Aktor Pengguna
+Aktor Pengguna
+Super Admin
+Mengelola data institusi sekolah dan domain email
 
-### Super Admin
-- Mengelola data institusi sekolah dan domain email
-- Mengatur akses dan perizinan
-- Memantau aktivitas sistem
+Mengatur akses dan perizinan
 
-### Guru
-- Mendaftar dengan email domain sekolah terverifikasi
-- Membuat dan mengelola kelas (kode unik 8 karakter)
-- Membuat materi pembelajaran (PDF, gambar, video, embed)
-- Membuat dan mengelola kuis (pilihan ganda, essay)
-- Mengatur timer kuis
-- Memantau progress murid
-- Berinteraksi di forum kelas
+Memantau aktivitas sistem
 
-### Murid
-- Didaftarkan oleh guru dengan kode kelas
-- Mengakses materi pembelajaran
-- Mengerjakan kuis dengan timer
-- Melihat papan peringkat per kelas
-- Berinteraksi di forum kelas
+Guru
+Mendaftar dengan email domain sekolah terverifikasi
 
-### Masyarakat Umum
-- Akses ke materi umum
-- Berpartisipasi di forum umum
-- Melihat konten edukatif
+Membuat dan mengelola kelas (kode unik 8 karakter)
 
-## Teknologi
+Membuat materi pembelajaran (PDF, gambar, video, embed)
 
-### Frontend
-- React Native + Expo
-- React Navigation
-- Zustand untuk state management
-- Expo Blur untuk efek visual
-- Linear Gradient untuk UI modern
+Membuat dan mengelola kuis (pilihan ganda, esai)
 
-### Backend
-- Firebase Authentication
-- Firestore Database
-- Firebase Storage
-- Firebase Cloud Messaging
+Mengatur timer kuis
 
-## Fitur Utama
+Memantau progress murid
 
-### Manajemen Kelas
-- Kode kelas unik 8 karakter
-- Sistem pendaftaran murid
-- Manajemen materi dan kuis
-- Papan peringkat per kelas
+Berinteraksi di forum kelas
 
-### Materi Pembelajaran
-- Format: PDF, gambar, video, embed
-- Batas ukuran: 10MB per file
-- Kategorisasi materi
-- Progress tracking
+Murid
+Didaftarkan oleh guru dengan kode kelas
 
-### Kuis
-- Tipe: Pilihan ganda, essay
-- Timer per kuis
-- Sistem penilaian otomatis
-- Review jawaban
+Mengakses materi pembelajaran
 
-### Forum Diskusi
-- Forum umum untuk masyarakat
-- Forum kelas untuk guru dan murid
-- Fitur: komentar, like, share
-- Notifikasi interaksi
+Mengerjakan kuis dengan timer
 
-### Notifikasi
-- Notifikasi sistem
-- Notifikasi interaksi
-- Notifikasi kuis dan materi baru
-- Pengaturan preferensi notifikasi
+Melihat papan peringkat per kelas
 
-## UI/UX
+Berinteraksi di forum kelas
 
-### Palet Warna
-- Primary: #1A788E
-- Secondary: #0A363F
-- Accent: #E1E0C0, #A7A691, #ECEAC9
+Masyarakat Umum
+Akses ke materi umum
 
-### Desain
-- Modern dan futuristik
-- Animasi interaktif
-- Responsif di berbagai ukuran layar
-- Aksesibilitas tinggi
+Berpartisipasi di forum umum
 
-## Keamanan
-- Verifikasi email domain sekolah
-- Enkripsi data sensitif
-- Firestore Security Rules
-- Role-based access control
+Melihat konten edukatif
 
-## Update Terakhir
-- Implementasi UI modern dengan efek blur dan gradien
-- Penambahan fitur forum diskusi terpisah
-- Sistem notifikasi yang dapat dikustomisasi
-- Batasan ukuran file materi (10MB)
-- Kode kelas unik 8 karakter
+Teknologi
+Frontend
+React Native + Expo
 
-## Roadmap
-- [ ] Implementasi sistem verifikasi email sekolah
-- [ ] Pengembangan fitur kuis dengan timer
-- [ ] Integrasi sistem notifikasi
-- [ ] Pengembangan forum diskusi
-- [ ] Implementasi papan peringkat
-- [ ] Optimasi performa dan keamanan
-- [ ] Menggunakan data asli, bukan dummy
-- [ ] Gunakan konfigurasi development build agar bisa run dan pantau pengembangannya
+React Navigation
+
+Zustand untuk state management
+
+Expo Blur untuk efek visual
+
+Linear Gradient untuk UI modern
+
+Backend
+Supabase Auth untuk Otentikasi Pengguna
+
+Supabase Database (PostgreSQL) sebagai Database Utama
+
+Supabase Storage untuk Penyimpanan File
+
+Supabase Edge Functions untuk Logika Sisi Server dan Notifikasi
+
+Fitur Utama
+Manajemen Kelas
+Kode kelas unik 8 karakter
+
+Sistem pendaftaran murid
+
+Manajemen materi dan kuis
+
+Papan peringkat per kelas
+
+Materi Pembelajaran
+Format: PDF, gambar, video, embed
+
+Batas ukuran: 10MB per file
+
+Kategorisasi materi
+
+Progress tracking
+
+Kuis
+Tipe: Pilihan ganda, esai
+
+Timer per kuis
+
+Sistem penilaian otomatis
+
+Review jawaban
+
+Forum Diskusi
+Forum umum untuk masyarakat
+
+Forum kelas untuk guru dan murid
+
+Fitur: komentar, like, share
+
+Notifikasi interaksi
+
+Notifikasi
+Notifikasi sistem
+
+Notifikasi interaksi
+
+Notifikasi kuis dan materi baru
+
+Pengaturan preferensi notifikasi
+
+UI/UX
+Palet Warna
+Primary: #1A788E
+
+Secondary: #0A363F
+
+Accent: #E1E0C0, #A7A691, #ECEAC9
+
+Desain
+Modern dan futuristik
+
+Animasi interaktif
+
+Responsif di berbagai ukuran layar
+
+Aksesibilitas tinggi
+
+Keamanan
+Verifikasi email domain sekolah
+
+Enkripsi data sensitif
+
+Supabase Row Level Security (RLS) untuk proteksi data di level baris
+
+Role-based access control (RBAC)
+
+Update Terakhir
+Migrasi arsitektur backend dari Firebase ke Supabase.
+
+Implementasi UI modern dengan efek blur dan gradien.
+
+Penambahan fitur forum diskusi terpisah.
+
+Sistem notifikasi yang dapat dikustomisasi.
+
+Batasan ukuran file materi (10MB).
+
+Kode kelas unik 8 karakter.
+
+Roadmap
+[ ] Implementasi sistem verifikasi email sekolah
+
+[ ] Pengembangan fitur kuis dengan timer
+
+[ ] Integrasi sistem notifikasi (menggunakan Supabase Functions)
+
+[ ] Pengembangan forum diskusi
+
+[ ] Implementasi papan peringkat
+
+[ ] Optimasi performa dan keamanan
+
+[ ] Menggunakan data asli, bukan dummy
+
+[ ] Gunakan konfigurasi development build agar bisa run dan pantau pengembangannya
