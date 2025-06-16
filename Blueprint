@@ -1,27 +1,115 @@
-Blueprint Aplikasi Pembelajaran Ekosistem
-Aktor Pengguna:
+# EcoTerra - Aplikasi Pembelajaran Ekosistem
 
-Super Admin: Mendaftarkan institusi sekolah beserta domain email resminya. (Peran ini mungkin tidak memerlukan antarmuka di aplikasi mobile, cukup di backend atau dashboard khusus).
-Guru: Mendaftar dengan email domain sekolah yang sudah terverifikasi, dapat membuat kelas, mendaftarkan murid, membuat kuis & materi.
-Murid: Didaftarkan oleh guru, dapat mengerjakan kuis, mengakses materi, dan melihat papan peringkat.
-Masyarakat Umum: Mendaftar sendiri, hanya bisa mengakses forum dan materi umum.
-Teknologi Utama:
+## Deskripsi
+EcoTerra adalah aplikasi pembelajaran ekosistem yang menghubungkan guru, murid, dan masyarakat umum dalam platform pembelajaran yang interaktif dan ramah lingkungan.
 
-Frontend: React Native + Expo
-Navigasi: React Navigation
-State Management: Zustand
-Backend & Database: Firebase
-Otentikasi: Firebase Authentication (untuk login & registrasi).
-Database: Firestore (dengan koleksi terpisah untuk schools, teachers, students, classes, materials, quizzes).
-Penyimpanan File: Firebase Storage (untuk PDF, gambar) dan/atau embed dari YouTube (untuk video).
-Notifikasi: Firebase Cloud Messaging (untuk Push Notification).
-Struktur & Aturan Kunci:
+## Aktor Pengguna
 
-Struktur Data: Relasional antar koleksi. Sebuah entitas schools akan menyimpan domain yang menjadi kunci verifikasi.
-Alur Kelas: Guru membuat kelas, mendapatkan kode kelas unik, dan mendaftarkan murid ke dalam kelas tersebut.
-Keamanan: Data sensitif siswa (nilai) bersifat privat. Data lain (nama, absen) hanya bisa dilihat oleh komunitas sekolah yang sama (Guru & Murid lain di sekolah tersebut), diatur melalui Firestore Security Rules.
-Fitur Spesial: Papan peringkat (leaderboard) akan mengakumulasi semua nilai kuis yang diberikan oleh seorang guru.
-UI/UX:
+### Super Admin
+- Mengelola data institusi sekolah dan domain email
+- Mengatur akses dan perizinan
+- Memantau aktivitas sistem
 
-Palet Warna: Menggunakan palet yang telah Anda berikan (#E1E0C0, #A7A691, #ECEAC9, #1A788E, #0A363F).
-Interaktivitas: Menggunakan animasi modern untuk berbagai aksi pengguna.
+### Guru
+- Mendaftar dengan email domain sekolah terverifikasi
+- Membuat dan mengelola kelas (kode unik 8 karakter)
+- Membuat materi pembelajaran (PDF, gambar, video, embed)
+- Membuat dan mengelola kuis (pilihan ganda, essay)
+- Mengatur timer kuis
+- Memantau progress murid
+- Berinteraksi di forum kelas
+
+### Murid
+- Didaftarkan oleh guru dengan kode kelas
+- Mengakses materi pembelajaran
+- Mengerjakan kuis dengan timer
+- Melihat papan peringkat per kelas
+- Berinteraksi di forum kelas
+
+### Masyarakat Umum
+- Akses ke materi umum
+- Berpartisipasi di forum umum
+- Melihat konten edukatif
+
+## Teknologi
+
+### Frontend
+- React Native + Expo
+- React Navigation
+- Zustand untuk state management
+- Expo Blur untuk efek visual
+- Linear Gradient untuk UI modern
+
+### Backend
+- Firebase Authentication
+- Firestore Database
+- Firebase Storage
+- Firebase Cloud Messaging
+
+## Fitur Utama
+
+### Manajemen Kelas
+- Kode kelas unik 8 karakter
+- Sistem pendaftaran murid
+- Manajemen materi dan kuis
+- Papan peringkat per kelas
+
+### Materi Pembelajaran
+- Format: PDF, gambar, video, embed
+- Batas ukuran: 10MB per file
+- Kategorisasi materi
+- Progress tracking
+
+### Kuis
+- Tipe: Pilihan ganda, essay
+- Timer per kuis
+- Sistem penilaian otomatis
+- Review jawaban
+
+### Forum Diskusi
+- Forum umum untuk masyarakat
+- Forum kelas untuk guru dan murid
+- Fitur: komentar, like, share
+- Notifikasi interaksi
+
+### Notifikasi
+- Notifikasi sistem
+- Notifikasi interaksi
+- Notifikasi kuis dan materi baru
+- Pengaturan preferensi notifikasi
+
+## UI/UX
+
+### Palet Warna
+- Primary: #1A788E
+- Secondary: #0A363F
+- Accent: #E1E0C0, #A7A691, #ECEAC9
+
+### Desain
+- Modern dan futuristik
+- Animasi interaktif
+- Responsif di berbagai ukuran layar
+- Aksesibilitas tinggi
+
+## Keamanan
+- Verifikasi email domain sekolah
+- Enkripsi data sensitif
+- Firestore Security Rules
+- Role-based access control
+
+## Update Terakhir
+- Implementasi UI modern dengan efek blur dan gradien
+- Penambahan fitur forum diskusi terpisah
+- Sistem notifikasi yang dapat dikustomisasi
+- Batasan ukuran file materi (10MB)
+- Kode kelas unik 8 karakter
+
+## Roadmap
+- [ ] Implementasi sistem verifikasi email sekolah
+- [ ] Pengembangan fitur kuis dengan timer
+- [ ] Integrasi sistem notifikasi
+- [ ] Pengembangan forum diskusi
+- [ ] Implementasi papan peringkat
+- [ ] Optimasi performa dan keamanan
+- [ ] Menggunakan data asli, bukan dummy
+- [ ] gunakan konfigurasi development build agar bisa run dan pantau pengembangannya
