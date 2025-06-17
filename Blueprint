@@ -1,167 +1,132 @@
-EcoTerra - Aplikasi Pembelajaran Ekosistem
-Deskripsi
-EcoTerra adalah aplikasi pembelajaran ekosistem yang menghubungkan guru, murid, dan masyarakat umum dalam platform pembelajaran yang interaktif dan ramah lingkungan.
-
-Aktor Pengguna
-Super Admin
-Mengelola data institusi sekolah dan domain email
-
-Mengatur akses dan perizinan
-
-Memantau aktivitas sistem
-
-Guru
-Mendaftar dengan email domain sekolah terverifikasi
-
-Membuat dan mengelola kelas (kode unik 8 karakter)
-
-Membuat materi pembelajaran (PDF, gambar, video, embed)
-
-Membuat dan mengelola kuis (pilihan ganda, esai)
-
-Mengatur timer kuis
-
-Memantau progress murid
-
-Berinteraksi di forum kelas
-
-Murid
-Didaftarkan oleh guru dengan kode kelas
-
-Mengakses materi pembelajaran
-
-Mengerjakan kuis dengan timer
-
-Melihat papan peringkat per kelas
-
-Berinteraksi di forum kelas
-
-Masyarakat Umum
-Akses ke materi umum
-
-Berpartisipasi di forum umum
-
-Melihat konten edukatif
-
-Teknologi
-Frontend
-React Native + Expo
-
-React Navigation
-
-Zustand untuk state management
-
-Expo Blur untuk efek visual
-
-Linear Gradient untuk UI modern
-
-Backend
-Supabase Auth untuk Otentikasi Pengguna
-
-Supabase Database (PostgreSQL) sebagai Database Utama
-
-Supabase Storage untuk Penyimpanan File
-
-Supabase Edge Functions untuk Logika Sisi Server dan Notifikasi
-
-Fitur Utama
-Manajemen Kelas
-Kode kelas unik 8 karakter
-
-Sistem pendaftaran murid
-
-Manajemen materi dan kuis
-
-Papan peringkat per kelas
-
-Materi Pembelajaran
-Format: PDF, gambar, video, embed
-
-Batas ukuran: 10MB per file
-
-Kategorisasi materi
-
-Progress tracking
-
-Kuis
-Tipe: Pilihan ganda, esai
-
-Timer per kuis
-
-Sistem penilaian otomatis
-
-Review jawaban
-
-Forum Diskusi
-Forum umum untuk masyarakat
-
-Forum kelas untuk guru dan murid
-
-Fitur: komentar, like, share
-
-Notifikasi interaksi
-
-Notifikasi
-Notifikasi sistem
-
-Notifikasi interaksi
-
-Notifikasi kuis dan materi baru
-
-Pengaturan preferensi notifikasi
-
-UI/UX
-Palet Warna
-Primary: #1A788E
-
-Secondary: #0A363F
-
-Accent: #E1E0C0, #A7A691, #ECEAC9
-
-Desain
-Modern dan futuristik
-
-Animasi interaktif
-
-Responsif di berbagai ukuran layar
-
-Aksesibilitas tinggi
-
-Keamanan
-Verifikasi email domain sekolah
-
-Enkripsi data sensitif
-
-Supabase Row Level Security (RLS) untuk proteksi data di level baris
-
-Role-based access control (RBAC)
-
-Update Terakhir
-Migrasi arsitektur backend dari Firebase ke Supabase.
-
-Implementasi UI modern dengan efek blur dan gradien.
-
-Penambahan fitur forum diskusi terpisah.
-
-Sistem notifikasi yang dapat dikustomisasi.
-
-Batasan ukuran file materi (10MB).
-
-Kode kelas unik 8 karakter.
-
-Roadmap
-[ ] Implementasi sistem verifikasi email sekolah
-
-[ ] Pengembangan fitur kuis dengan timer
-
-[ ] Integrasi sistem notifikasi (menggunakan Supabase Functions)
-
-[ ] Pengembangan forum diskusi
-
-[ ] Implementasi papan peringkat
-
-[ ] Optimasi performa dan keamanan
-
-[ ] Menggunakan data asli, bukan dummy
-
-[ ] Gunakan konfigurasi development build agar bisa run dan pantau pengembangannya
+# EcoTerra - Aplikasi Pembelajaran Ekosistem эко
+
+EcoTerra adalah aplikasi mobile inovatif yang dirancang untuk merevolusi pembelajaran ekosistem. Platform ini menghubungkan guru, murid, dan masyarakat umum dalam sebuah lingkungan belajar yang interaktif, kolaboratif, dan ramah lingkungan.
+
+## Daftar Isi
+- [Tentang Proyek](#tentang-proyek)
+- [Fitur Utama](#fitur-utama)
+- [Tumpukan Teknologi (Tech Stack)](#tumpukan-teknologi-tech-stack)
+- [Memulai (Getting Started)](#memulai-getting-started)
+  - [Prasyarat](#prasyarat)
+  - [Konfigurasi Environment](#konfigurasi-environment)
+  - [Instalasi](#instalasi)
+  - [Menjalankan Development Server](#menjalankan-development-server)
+  - [Membuat Development Build](#membuat-development-build)
+- [Roadmap Proyek](#roadmap-proyek)
+- [Kontribusi](#kontribusi)
+
+## Tentang Proyek
+Proyek ini bertujuan untuk menciptakan sebuah platform edukasi terpusat yang memungkinkan:
+
+- **Guru** untuk membuat kelas, mengelola materi & kuis, serta memantau progres murid.
+- **Murid** untuk belajar melalui materi interaktif, mengerjakan kuis, dan berkompetisi di papan peringkat.
+- **Masyarakat Umum** untuk mengakses konten edukatif dan berpartisipasi dalam diskusi lingkungan.
+
+Aplikasi ini dibangun dengan arsitektur modern, migrasi dari Firebase ke Supabase untuk backend yang lebih kuat dan UI yang diperbarui dengan efek visual seperti blur dan gradien untuk pengalaman pengguna yang futuristik.
+
+## Fitur Utama
+- 👨‍🏫 **Manajemen Kelas:** Kode kelas unik 8 karakter, pendaftaran murid, manajemen materi & kuis, dan papan peringkat per kelas.
+- 📚 **Materi Pembelajaran:** Mendukung format PDF, gambar, video, dan konten embed (maks 10MB per file) dengan pelacakan progres.
+- 📝 **Kuis Interaktif:** Tipe soal pilihan ganda dan esai, dilengkapi timer per kuis dan sistem penilaian otomatis.
+- 💬 **Forum Diskusi:** Forum terpisah untuk umum dan per kelas, dengan fitur komentar, suka, dan notifikasi interaksi.
+- 🔔 **Sistem Notifikasi:** Notifikasi kustom untuk materi baru, kuis, interaksi forum, dan pengumuman sistem.
+- 🔐 **Keamanan:** Verifikasi email domain sekolah, enkripsi data, kontrol akses berbasis peran (RBAC), dan proteksi data dengan Supabase RLS.
+
+## Tumpukan Teknologi (Tech Stack)
+
+### Frontend
+- **Framework:** React Native + Expo
+- **Navigasi:** React Navigation
+- **State Management:** Zustand
+- **UI/UX:** Expo Blur, Expo Linear Gradient
+
+### Backend
+- **Otentikasi:** Supabase Auth
+- **Database:** Supabase Database (PostgreSQL)
+- **Penyimpanan File:** Supabase Storage
+- **Logika Sisi Server:** Supabase Edge Functions
+
+## Memulai (Getting Started)
+
+### Prasyarat
+Pastikan perangkat Anda telah terpasang:
+- Node.js (versi LTS direkomendasikan)
+- Git
+- EAS CLI (`npm install -g eas-cli`)
+- Aplikasi Expo Go di perangkat mobile Anda (App Store/Play Store)
+
+### Konfigurasi Environment
+
+1. **Buat Proyek Supabase:** Kunjungi [supabase.com](https://supabase.com), buat proyek baru.
+2. **Dapatkan Kunci API:** Di dashboard Supabase, navigasi ke *Settings > API*. Anda memerlukan:
+   - `Project URL`
+   - `anon public key`
+3. **Buat File `.env`** di root direktori proyek.
+4. **Isi File `.env`** seperti ini:
+
+```env
+# Supabase Credentials
+EXPO_PUBLIC_SUPABASE_URL=URL_PROYEK_SUPABASE_ANDA
+EXPO_PUBLIC_SUPABASE_ANON_KEY=ANON_PUBLIC_KEY_ANDA
+```
+
+**PENTING:** Prefix `EXPO_PUBLIC_` wajib ada agar variabel bisa diakses oleh aplikasi Expo. Tambahkan juga file `.env` ke `.gitignore`.
+
+### Instalasi
+```bash
+git clone https://url-repositori-anda.git
+cd EcoTerra
+npm install
+```
+
+### Menjalankan Development Server
+```bash
+npx expo start
+```
+Pindai QR code yang muncul dengan aplikasi Expo Go.
+
+### Membuat Development Build
+
+1. **Login ke Akun Expo:**
+```bash
+eas login
+```
+
+2. **Konfigurasi EAS Build:**
+```bash
+eas build:configure
+```
+
+3. **Buat Build:**
+```bash
+# Android
+eas build --platform android --profile development
+
+# iOS
+eas build --platform ios --profile development
+```
+
+4. **Install & Jalankan:**
+Unduh file `.apk` / `.ipa`, install di perangkat/simulator, lalu jalankan:
+```bash
+npx expo start --dev-client
+```
+
+## Roadmap Proyek
+- [x] Implementasi sistem verifikasi email sekolah
+- [x] Pengembangan fitur kuis dengan timer
+- [x] Integrasi sistem notifikasi (menggunakan Supabase Functions)
+- [x] Pengembangan forum diskusi
+- [x] Implementasi papan peringkat
+- [ ] ⚖️ Optimasi performa dan keamanan
+- [ ] 📊 Menggunakan data asli, bukan dummy
+- [x] Gunakan konfigurasi development build agar bisa run dan pantau pengembangannya
+
+## Kontribusi
+Kontribusi sangat kami hargai! Untuk berkontribusi:
+
+1. **Fork** repositori
+2. **Buat branch** fitur/bugfix Anda
+3. **Buat Pull Request** setelah selesai
+
+Untuk perubahan besar, disarankan buka issue dulu untuk diskusi ide atau perbaikannya. Terima kasih! ✨
