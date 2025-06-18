@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './src/navigation/AppNavigator';
 import { ThemeProvider } from './src/utils/ThemeContext';
@@ -8,7 +8,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <StatusBar style="light" />
+        <StatusBar barStyle="light-content" backgroundColor="#1A788E" />
         <AppNavigator />
       </ThemeProvider>
     </SafeAreaProvider>

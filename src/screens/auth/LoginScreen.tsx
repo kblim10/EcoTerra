@@ -12,8 +12,7 @@ import {
   ScrollView,
   Alert
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
+import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '../../utils/ThemeContext';
 import { useAuthStore } from '../../store/authStore';
 
@@ -50,7 +49,7 @@ const LoginScreen = ({ navigation }: any) => {
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
         >
-          <BlurView intensity={20} tint="dark" style={styles.blurContainer}>
+          <View style={styles.blurContainer}>
             <View style={styles.logoContainer}>
               <Image
                 source={require('../../assets/logo-placeholder.png')}
@@ -66,57 +65,45 @@ const LoginScreen = ({ navigation }: any) => {
             </View>
             
             <View style={styles.formContainer}>
-              <Text style={[styles.label, { color: theme.colors.textLight }]}>
-                Email
-              </Text>
+              <Text style={[styles.label, { color: theme.colors.textLight }]}>Email</Text>
               <TextInput
-                style={[
-                  styles.input,
-                  { 
-                    backgroundColor: 'rgba(255,255,255,0.2)',
-                    color: theme.colors.textLight,
-                    borderColor: theme.colors.accent1
-                  }
-                ]}
+                style={[styles.input, { borderColor: theme.colors.border }]}
                 placeholder="Masukkan email Anda"
-                placeholderTextColor="rgba(255,255,255,0.6)"
+                placeholderTextColor={theme.colors.textMuted}
+                keyboardType="email-address"
+                autoCapitalize="none"
                 value={email}
                 onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
               />
               
-              <Text style={[styles.label, { color: theme.colors.textLight }]}>
-                Password
-              </Text>
+              <Text style={[styles.label, { color: theme.colors.textLight }]}>Password</Text>
               <TextInput
-                style={[
-                  styles.input,
-                  { 
-                    backgroundColor: 'rgba(255,255,255,0.2)',
-                    color: theme.colors.textLight,
-                    borderColor: theme.colors.accent1
-                  }
-                ]}
+                style={[styles.input, { borderColor: theme.colors.border }]}
                 placeholder="Masukkan password Anda"
-                placeholderTextColor="rgba(255,255,255,0.6)"
+                placeholderTextColor={theme.colors.textMuted}
+                secureTextEntry
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
               />
               
               <TouchableOpacity 
-                style={[
-                  styles.loginButton,
-                  { backgroundColor: theme.colors.accent3 }
-                ]}
+                onPress={() => navigation.navigate('ForgotPassword')}
+                style={styles.forgotPasswordContainer}
+              >
+                <Text style={[styles.forgotPassword, { color: theme.colors.accent2 }]}>
+                  Lupa Password?
+                </Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={[styles.button, { backgroundColor: theme.colors.accent1 }]}
                 onPress={handleLogin}
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <ActivityIndicator color={theme.colors.secondary} />
+                  <ActivityIndicator color={theme.colors.textLight} />
                 ) : (
-                  <Text style={[styles.loginButtonText, { color: theme.colors.secondary }]}>
+                  <Text style={[styles.buttonText, { color: theme.colors.textLight }]}>
                     Masuk
                   </Text>
                 )}
@@ -127,13 +114,13 @@ const LoginScreen = ({ navigation }: any) => {
                   Belum punya akun?
                 </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                  <Text style={[styles.registerLink, { color: theme.colors.accent3 }]}>
+                  <Text style={[styles.registerLink, { color: theme.colors.accent2 }]}>
                     Daftar
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
-          </BlurView>
+          </View>
         </ScrollView>
       </LinearGradient>
     </KeyboardAvoidingView>
@@ -143,17 +130,17 @@ const LoginScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 20,
   },
   scrollContent: {
     flexGrow: 1,
     justifyContent: 'center',
+    padding: 20,
   },
   blurContainer: {
-    borderRadius: 16,
+    borderRadius: 15,
     overflow: 'hidden',
     padding: 20,
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   logoContainer: {
     alignItems: 'center',
@@ -165,45 +152,52 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 5,
   },
   subtitle: {
     fontSize: 16,
-    marginBottom: 20,
   },
   formContainer: {
-    width: '100%',
+    marginBottom: 20,
   },
   label: {
     fontSize: 16,
     marginBottom: 5,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   input: {
-    height: 50,
+    backgroundColor: 'rgba(255,255,255,0.15)',
     borderWidth: 1,
     borderRadius: 8,
+    padding: 12,
     marginBottom: 15,
-    paddingHorizontal: 15,
     fontSize: 16,
+    color: 'white',
   },
-  loginButton: {
-    height: 50,
+  forgotPasswordContainer: {
+    alignItems: 'flex-end',
+    marginBottom: 20,
+  },
+  forgotPassword: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  button: {
     borderRadius: 8,
-    justifyContent: 'center',
+    padding: 15,
     alignItems: 'center',
-    marginTop: 10,
+    marginBottom: 20,
   },
-  loginButtonText: {
-    fontSize: 18,
+  buttonText: {
+    fontSize: 16,
     fontWeight: 'bold',
   },
   registerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20,
+    alignItems: 'center',
   },
   registerText: {
     marginRight: 5,

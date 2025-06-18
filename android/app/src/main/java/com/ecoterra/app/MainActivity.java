@@ -1,21 +1,21 @@
-package com.package.ecoterra;
+package com.ecoterra.app;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.content.Intent;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
-
-import expo.modules.ReactActivityDelegateWrapper;
+import com.facebook.react.devsupport.DevSettingsActivity;
 
 public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     // Set the theme to AppTheme BEFORE onCreate to support 
     // coloring the background, status bar, and navigation bar.
-    // This is required for expo-splash-screen.
     setTheme(R.style.AppTheme);
     super.onCreate(null);
   }
@@ -26,7 +26,21 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "main";
+    return "EcoTerra";
+  }
+
+  /**
+   * Handle dev menu keyboard shortcut
+   */
+  @Override
+  public boolean onKeyUp(int keyCode, KeyEvent event) {
+    if (keyCode == KeyEvent.KEYCODE_MENU) {
+      // Langsung buka DevSettingsActivity
+      Intent intent = new Intent(this, DevSettingsActivity.class);
+      startActivity(intent);
+      return true;
+    }
+    return super.onKeyUp(keyCode, event);
   }
 
   /**
@@ -36,11 +50,11 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
-    return new ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, new DefaultReactActivityDelegate(
+    return new DefaultReactActivityDelegate(
         this,
         getMainComponentName(),
         // If you opted-in for the New Architecture, we enable the Fabric Renderer.
-        DefaultNewArchitectureEntryPoint.getFabricEnabled()));
+        DefaultNewArchitectureEntryPoint.getFabricEnabled());
   }
 
   /**
@@ -49,17 +63,17 @@ public class MainActivity extends ReactActivity {
    * @see <a href="https://developer.android.com/reference/android/app/Activity#onBackPressed()">onBackPressed</a>
    */
   @Override
-  public void invokeDefaultOnBackPressed() {
+  public void onBackPressed() {
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
       if (!moveTaskToBack(false)) {
         // For non-root activities, use the default implementation to finish them.
-        super.invokeDefaultOnBackPressed();
+        super.onBackPressed();
       }
       return;
     }
 
     // Use the default back button implementation on Android S
     // because it's doing more than {@link Activity#moveTaskToBack} in fact.
-    super.invokeDefaultOnBackPressed();
+    super.onBackPressed();
   }
-}
+} 

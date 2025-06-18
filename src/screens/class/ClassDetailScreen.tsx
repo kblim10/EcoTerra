@@ -7,17 +7,22 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   FlatList,
-  Alert
+  Alert,
+  Image,
+  SafeAreaView
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../../utils/ThemeContext';
 import { useClassStore } from '../../store/classStore';
 import { MaterialData, QuizData } from '../../services/supabaseClient';
 import { Ionicons } from '@expo/vector-icons';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
-const ClassDetailScreen = ({ route, navigation }: any) => {
-  const { classId, className } = route.params;
+const ClassDetailScreen = () => {
+  const route = useRoute<any>();
+  const navigation = useNavigation();
   const theme = useTheme();
+  const { classId, className } = route.params;
   const { currentClass, fetchClassById, fetchMaterials, fetchQuizzes, materials, quizzes } = useClassStore();
   
   const [isLoading, setIsLoading] = useState(true);
@@ -45,6 +50,62 @@ const ClassDetailScreen = ({ route, navigation }: any) => {
     
     loadData();
   }, [classId, navigation]);
+  
+  // Dummy data untuk materi
+  const dummyMaterials = [
+    {
+      id: '1',
+      title: 'Pengenalan Konsep Lingkungan Hidup',
+      type: 'pdf',
+      description: 'Dokumen pengenalan dasar tentang lingkungan hidup dan ekosistem.',
+      duration: '15 menit',
+      isCompleted: true,
+    },
+    {
+      id: '2',
+      title: 'Video: Dampak Perubahan Iklim',
+      type: 'video',
+      description: 'Video mengenai dampak perubahan iklim terhadap ekosistem bumi.',
+      duration: '20 menit',
+      isCompleted: true,
+    },
+    {
+      id: '3',
+      title: 'Praktik Pengelolaan Sampah',
+      type: 'pdf',
+      description: 'Panduan praktis untuk pengelolaan sampah rumah tangga.',
+      duration: '10 menit',
+      isCompleted: false,
+    },
+    {
+      id: '4',
+      title: 'Quiz: Pengetahuan Dasar Lingkungan',
+      type: 'quiz',
+      description: 'Uji pengetahuan Anda tentang dasar-dasar lingkungan hidup.',
+      duration: '30 menit',
+      isCompleted: false,
+    },
+    {
+      id: '5',
+      title: 'Studi Kasus: Restorasi Hutan',
+      type: 'pdf',
+      description: 'Studi kasus tentang upaya restorasi hutan di Indonesia.',
+      duration: '25 menit',
+      isCompleted: false,
+    },
+  ];
+
+  // Dummy data untuk info kelas
+  const classInfo = {
+    title: className || 'Pengenalan Lingkungan Hidup',
+    instructor: 'Dr. Budi Santoso',
+    description: 'Kelas ini membahas tentang konsep dasar lingkungan hidup, ekosistem, dan bagaimana manusia dapat berinteraksi dengan alam secara berkelanjutan. Anda akan mempelajari berbagai isu lingkungan dan solusi praktis yang dapat diterapkan dalam kehidupan sehari-hari.',
+    totalStudents: 120,
+    duration: '8 minggu',
+    level: 'Pemula',
+    progress: 40,
+    image: require('../../assets/logo-placeholder.png'),
+  };
   
   // Render item materi
   const renderMaterialItem = ({ item }: { item: MaterialData }) => (
@@ -121,160 +182,214 @@ const ClassDetailScreen = ({ route, navigation }: any) => {
   }
   
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      {/* Header Kelas */}
-      <LinearGradient
-        colors={[theme.colors.primary, theme.colors.secondary]}
-        style={styles.header}
-      >
-        <View style={styles.headerContent}>
-          <Text style={[styles.className, { color: theme.colors.textLight }]}>
-            {currentClass?.name || className}
-          </Text>
-          <Text style={[styles.classCode, { color: theme.colors.accent3 }]}>
-            Kode: {currentClass?.code}
-          </Text>
-          <Text style={[styles.classDescription, { color: theme.colors.accent1 }]}>
-            {currentClass?.description || 'Tidak ada deskripsi'}
-          </Text>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <ScrollView>
+        {/* Header Image & Info */}
+        <View style={styles.header}>
+          <Image
+            source={classInfo.image}
+            style={styles.headerImage}
+            resizeMode="cover"
+          />
+          <View style={[styles.infoContainer, { backgroundColor: theme.colors.card }]}>
+            <Text style={[styles.classTitle, { color: theme.colors.text }]}>
+              {classInfo.title}
+            </Text>
+            <Text style={[styles.instructorName, { color: theme.colors.secondary }]}>
+              Instruktur: {classInfo.instructor}
+            </Text>
+            <Text style={[styles.classDescription, { color: theme.colors.text }]}>
+              {classInfo.description}
+            </Text>
+            
+            <View style={styles.statsRow}>
+              <View style={styles.statItem}>
+                <Text style={[styles.statValue, { color: theme.colors.primary }]}>
+                  {classInfo.totalStudents}
+                </Text>
+                <Text style={[styles.statLabel, { color: theme.colors.secondary }]}>
+                  Peserta
+                </Text>
+              </View>
+              
+              <View style={styles.statItem}>
+                <Text style={[styles.statValue, { color: theme.colors.primary }]}>
+                  {classInfo.duration}
+                </Text>
+                <Text style={[styles.statLabel, { color: theme.colors.secondary }]}>
+                  Durasi
+                </Text>
+              </View>
+              
+              <View style={styles.statItem}>
+                <Text style={[styles.statValue, { color: theme.colors.primary }]}>
+                  {classInfo.level}
+                </Text>
+                <Text style={[styles.statLabel, { color: theme.colors.secondary }]}>
+                  Level
+                </Text>
+              </View>
+            </View>
+            
+            <View style={styles.progressContainer}>
+              <View style={styles.progressHeader}>
+                <Text style={[styles.progressLabel, { color: theme.colors.text }]}>
+                  Progress Kelas
+                </Text>
+                <Text style={[styles.progressPercentage, { color: theme.colors.primary }]}>
+                  {classInfo.progress}%
+                </Text>
+              </View>
+              <View style={[styles.progressBar, { backgroundColor: theme.colors.border }]}>
+                <View
+                  style={[
+                    styles.progressFill,
+                    {
+                      backgroundColor: theme.colors.primary,
+                      width: `${classInfo.progress}%`,
+                    },
+                  ]}
+                />
+              </View>
+            </View>
+          </View>
         </View>
         
-        <View style={styles.actionButtons}>
-          <TouchableOpacity 
-            style={[styles.actionButton, { backgroundColor: 'rgba(255,255,255,0.2)' }]}
-            onPress={() => navigation.navigate('ClassForum', { 
-              classId: classId,
-              className: currentClass?.name || className
-            })}
+        {/* Tab Navigation */}
+        <View style={[styles.tabContainer, { borderBottomColor: theme.colors.border }]}>
+          <TouchableOpacity
+            style={[
+              styles.tabButton,
+              activeTab === 'materials' && {
+                borderBottomColor: theme.colors.primary,
+                borderBottomWidth: 2,
+              },
+            ]}
+            onPress={() => setActiveTab('materials')}
           >
-            <Ionicons name="chatbubbles-outline" size={20} color={theme.colors.textLight} />
-            <Text style={[styles.actionButtonText, { color: theme.colors.textLight }]}>
+            <Text
+              style={[
+                styles.tabButtonText,
+                {
+                  color:
+                    activeTab === 'materials'
+                      ? theme.colors.primary
+                      : theme.colors.secondary,
+                },
+              ]}
+            >
+              Materi
+            </Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={[
+              styles.tabButton,
+              activeTab === 'forum' && {
+                borderBottomColor: theme.colors.primary,
+                borderBottomWidth: 2,
+              },
+            ]}
+            onPress={() => {
+              setActiveTab('forum');
+              navigation.navigate('ClassForum' as never, {
+                classId,
+                className,
+              } as never);
+            }}
+          >
+            <Text
+              style={[
+                styles.tabButtonText,
+                {
+                  color:
+                    activeTab === 'forum'
+                      ? theme.colors.primary
+                      : theme.colors.secondary,
+                },
+              ]}
+            >
               Forum
             </Text>
           </TouchableOpacity>
           
-          <TouchableOpacity 
-            style={[styles.actionButton, { backgroundColor: 'rgba(255,255,255,0.2)' }]}
-            onPress={() => navigation.navigate('Leaderboard', { classId: classId })}
+          <TouchableOpacity
+            style={[
+              styles.tabButton,
+              activeTab === 'leaderboard' && {
+                borderBottomColor: theme.colors.primary,
+                borderBottomWidth: 2,
+              },
+            ]}
+            onPress={() => {
+              setActiveTab('leaderboard');
+              navigation.navigate('Leaderboard' as never, { classId } as never);
+            }}
           >
-            <Ionicons name="trophy-outline" size={20} color={theme.colors.textLight} />
-            <Text style={[styles.actionButtonText, { color: theme.colors.textLight }]}>
+            <Text
+              style={[
+                styles.tabButtonText,
+                {
+                  color:
+                    activeTab === 'leaderboard'
+                      ? theme.colors.primary
+                      : theme.colors.secondary,
+                },
+              ]}
+            >
               Peringkat
             </Text>
           </TouchableOpacity>
         </View>
-      </LinearGradient>
-      
-      {/* Tab Navigation */}
-      <View style={styles.tabContainer}>
-        <TouchableOpacity 
-          style={[
-            styles.tabButton, 
-            activeTab === 'materials' && { 
-              borderBottomWidth: 2, 
-              borderBottomColor: theme.colors.primary 
-            }
-          ]}
-          onPress={() => setActiveTab('materials')}
-        >
-          <Text 
-            style={[
-              styles.tabText, 
-              { color: activeTab === 'materials' ? theme.colors.primary : theme.colors.secondary }
-            ]}
-          >
-            Materi
-          </Text>
-        </TouchableOpacity>
         
-        <TouchableOpacity 
-          style={[
-            styles.tabButton, 
-            activeTab === 'quizzes' && { 
-              borderBottomWidth: 2, 
-              borderBottomColor: theme.colors.primary 
-            }
-          ]}
-          onPress={() => setActiveTab('quizzes')}
-        >
-          <Text 
-            style={[
-              styles.tabText, 
-              { color: activeTab === 'quizzes' ? theme.colors.primary : theme.colors.secondary }
-            ]}
-          >
-            Kuis
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={[
-            styles.tabButton, 
-            activeTab === 'students' && { 
-              borderBottomWidth: 2, 
-              borderBottomColor: theme.colors.primary 
-            }
-          ]}
-          onPress={() => setActiveTab('students')}
-        >
-          <Text 
-            style={[
-              styles.tabText, 
-              { color: activeTab === 'students' ? theme.colors.primary : theme.colors.secondary }
-            ]}
-          >
-            Peserta
-          </Text>
-        </TouchableOpacity>
-      </View>
-      
-      {/* Content berdasarkan tab aktif */}
-      <ScrollView style={styles.contentContainer}>
-        {activeTab === 'materials' && (
-          <View>
-            {materials.length > 0 ? (
-              materials.map((material) => (
-                <View key={material.id}>
-                  {renderMaterialItem({ item: material })}
+        {/* Materials List */}
+        <View style={styles.materialsContainer}>
+          {activeTab === 'materials' && (
+            <View>
+              {materials.length > 0 ? (
+                materials.map((material) => (
+                  <View key={material.id}>
+                    {renderMaterialItem({ item: material })}
+                  </View>
+                ))
+              ) : (
+                <View style={[styles.emptyState, { borderColor: theme.colors.accent2 }]}>
+                  <Text style={[styles.emptyStateText, { color: theme.colors.secondary }]}>
+                    Belum ada materi untuk kelas ini
+                  </Text>
                 </View>
-              ))
-            ) : (
-              <View style={[styles.emptyState, { borderColor: theme.colors.accent2 }]}>
-                <Text style={[styles.emptyStateText, { color: theme.colors.secondary }]}>
-                  Belum ada materi untuk kelas ini
-                </Text>
-              </View>
-            )}
-          </View>
-        )}
-        
-        {activeTab === 'quizzes' && (
-          <View>
-            {quizzes.length > 0 ? (
-              quizzes.map((quiz) => (
-                <View key={quiz.id}>
-                  {renderQuizItem({ item: quiz })}
+              )}
+            </View>
+          )}
+          
+          {activeTab === 'quizzes' && (
+            <View>
+              {quizzes.length > 0 ? (
+                quizzes.map((quiz) => (
+                  <View key={quiz.id}>
+                    {renderQuizItem({ item: quiz })}
+                  </View>
+                ))
+              ) : (
+                <View style={[styles.emptyState, { borderColor: theme.colors.accent2 }]}>
+                  <Text style={[styles.emptyStateText, { color: theme.colors.secondary }]}>
+                    Belum ada kuis untuk kelas ini
+                  </Text>
                 </View>
-              ))
-            ) : (
-              <View style={[styles.emptyState, { borderColor: theme.colors.accent2 }]}>
-                <Text style={[styles.emptyStateText, { color: theme.colors.secondary }]}>
-                  Belum ada kuis untuk kelas ini
-                </Text>
-              </View>
-            )}
-          </View>
-        )}
-        
-        {activeTab === 'students' && (
-          <View style={[styles.emptyState, { borderColor: theme.colors.accent2 }]}>
-            <Text style={[styles.emptyStateText, { color: theme.colors.secondary }]}>
-              Fitur daftar peserta akan segera hadir
-            </Text>
-          </View>
-        )}
+              )}
+            </View>
+          )}
+          
+          {activeTab === 'students' && (
+            <View style={[styles.emptyState, { borderColor: theme.colors.accent2 }]}>
+              <Text style={[styles.emptyStateText, { color: theme.colors.secondary }]}>
+                Fitur daftar peserta akan segera hadir
+              </Text>
+            </View>
+          )}
+        </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -292,58 +407,92 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   header: {
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    overflow: 'hidden',
   },
-  headerContent: {
-    marginBottom: 15,
+  headerImage: {
+    width: '100%',
+    height: 200,
   },
-  className: {
-    fontSize: 24,
+  infoContainer: {
+    padding: 20,
+    marginTop: -20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  classTitle: {
+    fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 5,
   },
-  classCode: {
+  instructorName: {
     fontSize: 14,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   classDescription: {
-    fontSize: 16,
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 20,
   },
-  actionButtons: {
+  statsRow: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
-  actionButton: {
-    flexDirection: 'row',
+  statItem: {
     alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    marginRight: 10,
   },
-  actionButtonText: {
-    marginLeft: 5,
+  statValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 12,
+  },
+  progressContainer: {
+    marginBottom: 10,
+  },
+  progressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+  },
+  progressLabel: {
+    fontSize: 14,
     fontWeight: '500',
+  },
+  progressPercentage: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  progressBar: {
+    height: 8,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 4,
   },
   tabContainer: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.1)',
+    marginBottom: 20,
   },
   tabButton: {
     flex: 1,
     paddingVertical: 15,
     alignItems: 'center',
   },
-  tabText: {
+  tabButtonText: {
     fontSize: 16,
     fontWeight: '500',
   },
-  contentContainer: {
-    flex: 1,
-    padding: 15,
+  materialsContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 30,
   },
   itemCard: {
     flexDirection: 'row',

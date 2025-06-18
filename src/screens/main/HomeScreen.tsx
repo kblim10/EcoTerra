@@ -8,16 +8,19 @@ import {
   Image,
   RefreshControl,
   ActivityIndicator,
-  FlatList
+  FlatList,
+  SafeAreaView
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '../../utils/ThemeContext';
 import { useAuthStore } from '../../store/authStore';
 import { useClassStore } from '../../store/classStore';
 import { supabase } from '../../services/supabaseClient';
 import { MaterialData, ForumPostData } from '../../services/supabaseClient';
+import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = ({ navigation }: any) => {
+const HomeScreen = () => {
+  const navigation = useNavigation();
   const theme = useTheme();
   const { user } = useAuthStore();
   const { classes, fetchClasses } = useClassStore();
@@ -177,34 +180,19 @@ const HomeScreen = ({ navigation }: any) => {
   }
   
   return (
-    <ScrollView 
-      style={[styles.container, { backgroundColor: theme.colors.background }]}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          colors={[theme.colors.primary]}
-        />
-      }
-    >
-      {/* Header */}
-      <LinearGradient
-        colors={[theme.colors.primary, theme.colors.secondary]}
-        style={styles.header}
-      >
-        <View style={styles.headerContent}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Greeting Section */}
+        <View style={styles.greetingSection}>
           <View>
-            <Text style={[styles.welcomeText, { color: theme.colors.textLight }]}>
-              Selamat datang,
+            <Text style={[styles.welcomeText, { color: theme.colors.text }]}>
+              Selamat Datang,
             </Text>
-            <Text style={[styles.userName, { color: theme.colors.accent3 }]}>
+            <Text style={[styles.nameText, { color: theme.colors.text }]}>
               {user?.full_name || 'Pengguna'}
             </Text>
           </View>
-          <TouchableOpacity
-            style={styles.profileButton}
-            onPress={() => navigation.navigate('Profile')}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate('Profile' as never)}>
             <Image
               source={
                 user?.avatar_url 
@@ -215,104 +203,289 @@ const HomeScreen = ({ navigation }: any) => {
             />
           </TouchableOpacity>
         </View>
-      </LinearGradient>
-      
-      {/* Kelas Saya */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
+
+        {/* Featured Course */}
+        <View style={styles.sectionContainer}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-            Kelas Saya
+            Kelas Unggulan
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Class')}>
-            <Text style={[styles.seeAllText, { color: theme.colors.primary }]}>
-              Lihat Semua
-            </Text>
+          <TouchableOpacity
+            style={[styles.featuredCard, { backgroundColor: theme.colors.card }]}
+            onPress={() => 
+              navigation.navigate('ClassDetail', { 
+                classId: '1', 
+                className: 'Pengenalan Lingkungan Hidup' 
+              })
+            }
+          >
+            <Image source={require('../../assets/logo-placeholder.png')} style={styles.featuredImage} />
+            <View style={styles.featuredContent}>
+              <Text style={[styles.featuredTitle, { color: theme.colors.text }]}>
+                Pengenalan Lingkungan Hidup
+              </Text>
+              <Text 
+                style={[styles.featuredDescription, { color: theme.colors.secondary }]}
+                numberOfLines={2}
+              >
+                Pelajari dasar-dasar tentang lingkungan hidup dan bagaimana kita dapat berkontribusi untuk melestarikannya.
+              </Text>
+              <TouchableOpacity 
+                style={[styles.startButton, { backgroundColor: theme.colors.primary }]}
+              >
+                <Text style={styles.startButtonText}>Mulai Belajar</Text>
+              </TouchableOpacity>
+            </View>
           </TouchableOpacity>
         </View>
-        
-        {classes.length > 0 ? (
-          <FlatList
-            data={classes.slice(0, 3)}
-            renderItem={renderClassItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.classList}
-          />
-        ) : (
-          <View style={[styles.emptyState, { borderColor: theme.colors.accent2 }]}>
-            <Text style={[styles.emptyStateText, { color: theme.colors.secondary }]}>
-              Anda belum bergabung dengan kelas apapun
+
+        {/* Recent Classes */}
+        <View style={styles.sectionContainer}>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+              Kelas Terakhir
             </Text>
-            <TouchableOpacity
-              style={[styles.joinButton, { backgroundColor: theme.colors.primary }]}
-              onPress={() => navigation.navigate('Class')}
-            >
-              <Text style={[styles.joinButtonText, { color: theme.colors.textLight }]}>
-                Gabung Kelas
+            <TouchableOpacity onPress={() => navigation.navigate('Class' as never)}>
+              <Text style={[styles.viewAllText, { color: theme.colors.primary }]}>
+                Lihat Semua
               </Text>
             </TouchableOpacity>
           </View>
-        )}
-      </View>
-      
-      {/* Materi Terbaru */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-            Materi Terbaru
-          </Text>
-        </View>
-        
-        {latestMaterials.length > 0 ? (
-          latestMaterials.map((material) => (
-            <View key={material.id}>
-              {renderMaterialItem({ item: material })}
-            </View>
-          ))
-        ) : (
-          <View style={[styles.emptyState, { borderColor: theme.colors.accent2 }]}>
-            <Text style={[styles.emptyStateText, { color: theme.colors.secondary }]}>
-              Belum ada materi terbaru
-            </Text>
+          
+          <View style={styles.recentClassesContainer}>
+            {classes.slice(0, 2).map(course => (
+              <TouchableOpacity
+                key={course.id}
+                style={[styles.recentClassCard, { backgroundColor: theme.colors.card }]}
+                onPress={() => 
+                  navigation.navigate('ClassDetail', { 
+                    classId: course.id, 
+                    className: course.name 
+                  })
+                }
+              >
+                <Image source={require('../../assets/logo-placeholder.png')} style={styles.recentClassImage} />
+                <View style={styles.recentClassContent}>
+                  <Text 
+                    style={[styles.recentClassTitle, { color: theme.colors.text }]}
+                    numberOfLines={2}
+                  >
+                    {course.name}
+                  </Text>
+                  <View style={styles.progressContainer}>
+                    <View 
+                      style={[
+                        styles.progressBar, 
+                        { backgroundColor: theme.colors.border }
+                      ]}
+                    >
+                      <View 
+                        style={[
+                          styles.progressFill, 
+                          { 
+                            backgroundColor: theme.colors.primary,
+                            width: '30%' 
+                          }
+                        ]} 
+                      />
+                    </View>
+                    <Text style={[styles.progressText, { color: theme.colors.secondary }]}>
+                      30% selesai
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
-        )}
-      </View>
-      
-      {/* Forum Diskusi */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-            Forum Diskusi
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Forum')}>
-            <Text style={[styles.seeAllText, { color: theme.colors.primary }]}>
-              Lihat Semua
-            </Text>
-          </TouchableOpacity>
         </View>
-        
-        {latestForumPosts.length > 0 ? (
-          latestForumPosts.map((post) => (
-            <View key={post.id}>
-              {renderForumItem({ item: post })}
-            </View>
-          ))
-        ) : (
-          <View style={[styles.emptyState, { borderColor: theme.colors.accent2 }]}>
-            <Text style={[styles.emptyStateText, { color: theme.colors.secondary }]}>
-              Belum ada diskusi terbaru
+
+        {/* Eco News */}
+        <View style={styles.sectionContainer}>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+              Berita Eco
             </Text>
+            <TouchableOpacity>
+              <Text style={[styles.viewAllText, { color: theme.colors.primary }]}>
+                Lihat Semua
+              </Text>
+            </TouchableOpacity>
           </View>
-        )}
-      </View>
-    </ScrollView>
+          
+          {latestForumPosts.map(post => (
+            <TouchableOpacity
+              key={post.id}
+              style={[styles.newsCard, { backgroundColor: theme.colors.card }]}
+            >
+              <Image source={require('../../assets/logo-placeholder.png')} style={styles.newsImage} />
+              <View style={styles.newsContent}>
+                <Text 
+                  style={[styles.newsTitle, { color: theme.colors.text }]}
+                  numberOfLines={2}
+                >
+                  {post.title}
+                </Text>
+                <Text style={[styles.newsDate, { color: theme.colors.secondary }]}>
+                  {new Date(post.created_at).toLocaleDateString('id-ID')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContent: {
+    padding: 16,
+  },
+  greetingSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  welcomeText: {
+    fontSize: 14,
+  },
+  nameText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  profileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  sectionContainer: {
+    marginBottom: 24,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 12,
+  },
+  viewAllText: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  featuredCard: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  featuredImage: {
+    width: '100%',
+    height: 160,
+    resizeMode: 'cover',
+  },
+  featuredContent: {
+    padding: 16,
+  },
+  featuredTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  featuredDescription: {
+    fontSize: 14,
+    marginBottom: 16,
+  },
+  startButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    alignSelf: 'flex-start',
+  },
+  startButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  recentClassesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  recentClassCard: {
+    width: '48%',
+    borderRadius: 12,
+    overflow: 'hidden',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  recentClassImage: {
+    width: '100%',
+    height: 100,
+    resizeMode: 'cover',
+  },
+  recentClassContent: {
+    padding: 12,
+  },
+  recentClassTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 8,
+    height: 40, // Fixed height for 2 lines
+  },
+  progressContainer: {
+    marginTop: 4,
+  },
+  progressBar: {
+    height: 6,
+    borderRadius: 3,
+    marginBottom: 4,
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 3,
+  },
+  progressText: {
+    fontSize: 10,
+    textAlign: 'right',
+  },
+  newsCard: {
+    flexDirection: 'row',
+    borderRadius: 12,
+    marginBottom: 12,
+    overflow: 'hidden',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  newsImage: {
+    width: 80,
+    height: 80,
+  },
+  newsContent: {
+    flex: 1,
+    padding: 12,
+    justifyContent: 'space-between',
+  },
+  newsTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  newsDate: {
+    fontSize: 12,
   },
   loadingContainer: {
     flex: 1,
@@ -322,55 +495,6 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 10,
     fontSize: 16,
-  },
-  header: {
-    paddingTop: 20,
-    paddingBottom: 30,
-    paddingHorizontal: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-  },
-  headerContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  welcomeText: {
-    fontSize: 16,
-  },
-  userName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  profileButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    overflow: 'hidden',
-  },
-  profileImage: {
-    width: '100%',
-    height: '100%',
-  },
-  section: {
-    padding: 20,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  seeAllText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  classList: {
-    flexGrow: 0,
   },
   classCard: {
     width: 200,
@@ -449,27 +573,6 @@ const styles = StyleSheet.create({
   },
   forumDate: {
     fontSize: 12,
-  },
-  emptyState: {
-    padding: 20,
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyStateText: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  joinButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-  },
-  joinButtonText: {
-    fontWeight: 'bold',
   },
 });
 

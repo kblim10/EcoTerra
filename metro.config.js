@@ -1,7 +1,27 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
-const { getDefaultConfig } = require('expo/metro-config');
+const { getDefaultConfig } = require('metro-config');
 
-/** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname);
+/**
+ * Metro configuration
+ * https://reactnative.dev/docs/metro
+ */
 
-module.exports = config;
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts },
+  } = await getDefaultConfig();
+  return {
+    transformer: {
+      getTransformOptions: async () => ({
+        transform: {
+          experimentalImportSupport: false,
+          inlineRequires: false,
+        },
+      }),
+    },
+    resolver: {
+      assetExts: assetExts.filter(ext => ext !== 'svg'),
+      sourceExts: [...sourceExts, 'svg'],
+    },
+  };
+})();
